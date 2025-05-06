@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const AppError = require('./utils/AppError');
+const globalErrorHandler = require('./controllers/errorController');
 
 const app = express();
 
@@ -11,6 +12,18 @@ const app = express();
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+
+// const catchAsync = fn =>{
+//   return async (req, res,next) =>{
+//     fn(req, res).catch(err=>next(err))
+//   }
+// }
+
+const catchAsync = fn => {
+  return (req, res, next) => {
+    return fn(req, res, next).catch(err => next(err));
+  };
+};
 
 app.use(express.json());
 app.use(express.static(`${__dirname}/public`));
@@ -37,15 +50,7 @@ app.use('*', function(req, res, next) {
   next(new AppError(`Cannot find ${req.originalUrl} on the server.`, 404));
 });
 
-app.use((err, req, res, next) => {
-  //
-  err.statusCode = err.statusCode || 500;
-  err.status = err.status || 'error';
-  res.status(err.statusCode).json({
-    status: 'fail',
-    message: err.message
-  });
-});
+app.use(globalErrorHandler);
 // a quick note we made a global error route and then made an error up in there and then we used
 //app.use downwards and then  assigned the status code and status there. Finally, we responsed
 //with status: fail and error message there.  This is a use of global error handling middleware,
