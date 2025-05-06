@@ -19,12 +19,6 @@ if (process.env.NODE_ENV === 'development') {
 //   }
 // }
 
-const catchAsync = fn => {
-  return (req, res, next) => {
-    return fn(req, res, next).catch(err => next(err));
-  };
-};
-
 app.use(express.json());
 app.use(express.static(`${__dirname}/public`));
 
