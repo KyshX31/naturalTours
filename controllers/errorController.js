@@ -12,8 +12,11 @@ const handleDuplicateFieldsDB = err => {
   return new AppError(message, 400);
 };
 
-const handleValidationError = () => {
-  const message = `Valiation Error has occured`;
+const handleValidationError = err => {
+  const errors = Object.values(err.errors).map(el => el.message);
+
+  const message = `Valiation Error has occured. ${errors.join('. ')}`;
+
   return new AppError(message, 400);
 };
 
