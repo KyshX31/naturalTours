@@ -1,3 +1,22 @@
+const AppError = require('../utils/AppError');
+
+const handleCastError = err => {
+  const message = `Invalid ${err.path}: ${err.value}`;
+  return new AppError(message, 400);
+};
+
+const handleDuplicateFieldsDB = err => {
+  const message = `Duplicated Entries to already used. Please go for an another. ${
+    err.blablabla
+  }`;
+  return new AppError(message, 400);
+};
+
+const handleValidationError = () => {
+  const message = `Valiation Error has occured`;
+  return new AppError(message, 400);
+};
+
 function sendErrorDev(err, res) {
   res.status(err.statusCode).json({
     status: 'fail',
@@ -10,7 +29,7 @@ function sendErrorDev(err, res) {
 function sendErrorProd(err, res) {
   if (err.isOperational) {
     res.status(err.statusCode).json({
-      status: 'fail',
+      status: 'failed to deliver mesage',
       message: err.message
     });
   } else {
@@ -31,7 +50,18 @@ module.exports = (err, req, res, next) => {
   if (process.env.NODE_ENV === 'development') {
     sendErrorDev(err, res);
   } else if (process.env.NODE_ENV === 'production') {
-    sendErrorProd(err, res);
+    let error = { ...err };
+
+    if (error.name === 'CastError') {
+      error = handleCastError(error);
+    }
+
+    if (err.code === 11000) error = handleDuplicateFieldsDB(error);
+
+    if (err.name === 'ValidationError') {
+      handleValidationError(error);
+    }
+    sendErrorProd(error, res);
   }
 };
 // this is global error handling middleware.
