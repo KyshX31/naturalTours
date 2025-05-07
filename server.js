@@ -18,6 +18,18 @@ mongoose
   .then(() => console.log('DB connection successful!'));
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`App running on port ${port}...`);
+});
+
+process.on('unhandledRejection', err => {
+  //It will handle all the promise rejection errors and log the message for rejection. It is basically
+  //subscription to unhandle promise rejections.
+  console.log(err.name, err.message);
+
+  console.log('Unhandled rejection. Shutting down the server');
+
+  server.close(() => {
+    process.exit(1);
+  });
 });
