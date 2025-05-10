@@ -20,6 +20,13 @@ const handleValidationError = err => {
   return new AppError(message, 400);
 };
 
+const handleJsonWebTokenError = () => {
+  return new AppError(
+    'Your session has expired for some reason. Please Relogin',
+    500
+  );
+};
+//
 function sendErrorDev(err, res) {
   res.status(err.statusCode).json({
     status: 'fail',
@@ -62,7 +69,10 @@ module.exports = (err, req, res, next) => {
     if (err.code === 11000) error = handleDuplicateFieldsDB(error);
 
     if (err.name === 'ValidationError') {
-      handleValidationError(error);
+      error = handleValidationError(error);
+    }
+    if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
+      error = handleJsonWebTokenError();
     }
     sendErrorProd(error, res);
   }
