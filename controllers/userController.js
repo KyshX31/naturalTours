@@ -1,7 +1,7 @@
 exports.getAllUsers = (req, res) => {
   res.status(500).json({
     status: 'error',
-    message: 'This route is not yet defined!'
+    message: 'Checking if my middleware stacks work fine!'
   });
 };
 exports.getUser = (req, res) => {

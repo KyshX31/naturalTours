@@ -6,10 +6,6 @@ const { promisify } = require('util');
 const User = require('./../models/userModel');
 const { catchAsync } = require('../utils/catchAsync');
 const AppError = require('../utils/AppError');
-const { appendFile } = require('fs');
-// const { appendFile } = require('fs');
-// const { useImperativeHandle } = require('react');
-// const AppError = require('../utils/AppError');
 
 const signToken = id => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -130,3 +126,14 @@ exports.protect = catchAsync(async (req, res, next) => {
   req.user = userExists;
   next();
 });
+
+exports.restrictTo = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return next(
+        new AppError('You do not have Permission to perform this action', 403)
+      );
+    }
+    next();
+  };
+};
