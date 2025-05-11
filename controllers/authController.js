@@ -7,6 +7,8 @@ const User = require('./../models/userModel');
 const { catchAsync } = require('../utils/catchAsync');
 const AppError = require('../utils/AppError');
 
+const sendEmail = require('../utils/email');
+
 const signToken = id => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN
@@ -137,3 +139,43 @@ exports.restrictTo = (...roles) => {
     next();
   };
 };
+
+exports.forgotPassword = catchAsync(async (req, res, next) => {
+  //
+  const { email } = req.body;
+  const userFound = await User.findOne({ email });
+  if (!userFound) {
+    return next('User was not found', 404);
+  }
+
+  try {
+    const resetToken = userFound.createPasswordResetToken();
+
+    await userFound.save({ validateBeforeSave: false });
+
+    const resetTokenURL = `${req.protocol}://${req.get(
+      'host'
+    )}/api/v1/resetPassword/${resetToken}`;
+
+    const message = `Forgot Your Password? Please reset it by submitting a patch request on the below URI.
+  ${resetTokenURL}. Kindly ignore if you have not requested for a password change.`;
+    //
+    //
+    await sendEmail({
+      email,
+      subject: `Your password reset token is just valid for 10 minutes`,
+      message
+    });
+
+    req.status(200).json({
+      status: 'success',
+      message: 'Password reset token has been sent successfully.'
+    });
+  } catch (err) {
+    //do db operation: change the password reset token and password reset expiry
+    userFound.createPasswordResetToken = undefined;
+    userFound.passwordResetExpires = undefined;
+    await userFound.save({ validateBeforeSave: false });
+    return next(new AppError('Something went wrong🫣. Please Try Again', 500));
+  }
+});
