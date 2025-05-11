@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
+const crypto = require('crypto');
 
 // const bcrypt = require('bcryptjs');
 
@@ -149,7 +150,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   }
 
   try {
-    const resetToken = userFound.createPasswordResetToken();
+    const resetToken = userFound.createPasswordResetToken(); //unhashed
 
     await userFound.save({ validateBeforeSave: false });
 
@@ -161,13 +162,14 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   ${resetTokenURL}. Kindly ignore if you have not requested for a password change.`;
     //
     //
-    await sendEmail({
+    const emailResponse = await sendEmail({
       email,
       subject: `Your password reset token is just valid for 10 minutes`,
       message
     });
+    console.log('email response after reset mail trap: ', emailResponse);
 
-    req.status(200).json({
+    res.status(200).json({
       status: 'success',
       message: 'Password reset token has been sent successfully.'
     });
@@ -178,4 +180,30 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     await userFound.save({ validateBeforeSave: false });
     return next(new AppError('Something went wrong🫣. Please Try Again', 500));
   }
+});
+
+exports.resetPassword = catchAsync(async (req, res, next) => {
+  //
+  const hashedToken = crypto
+    .createHash('sha256')
+    .update(req.params.token)
+    .digest('hex');
+  const user = await User.findOne({ passwordResetToken: hashedToken });
+  console.log('The user found😨😨', user);
+  if (!user) {
+    return next(
+      new AppError('Invalid User or Tokenor Token Expired. Please try again ')
+    );
+  }
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
+  user.createPasswordResetToken = undefined;
+  user.passwordResetExpires = undefined;
+  await user.save();
+
+  const token = signToken(user._id);
+  res.status(200).json({
+    status: 'success',
+    token
+  });
 });
