@@ -4,20 +4,21 @@ const authController = require('../controllers/authController');
 
 const router = express.Router();
 
+// Auth routes
 router.post('/signup', authController.signUp);
 router.post('/login', authController.login);
-
 router.post('/forgotPassword', authController.forgotPassword);
 router.patch('/resetPassword/:token', authController.resetPassword);
-// router.post('/login', authController.login);
 
+// Protected routes
+router.use(authController.protect); // Protect all routes after this middleware
+
+router.patch('/updateMyPassword', authController.updatePassword);
+
+// Admin routes
 router
   .route('/')
-  .get(
-    authController.protect,
-    authController.restrictTo('admin'),
-    userController.getAllUsers
-  )
+  .get(authController.restrictTo('admin'), userController.getAllUsers)
   .post(userController.createUser);
 
 router

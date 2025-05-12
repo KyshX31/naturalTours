@@ -101,6 +101,7 @@ exports.protect = catchAsync(async (req, res, next) => {
     token = req.headers.authorization.split(' ')[1];
     console.log('token is', token);
   } else {
+    console.log('no token no protection');
     return next(new AppError('User is not logged in. Please Log In', 401));
   }
 
@@ -188,7 +189,10 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     .createHash('sha256')
     .update(req.params.token)
     .digest('hex');
-  const user = await User.findOne({ passwordResetToken: hashedToken });
+  const user = await User.findOne({
+    passwordResetToken: hashedToken,
+    passwordResetExpires: { $gt: Date.now() }
+  });
   console.log('The user found😨😨', user);
   if (!user) {
     return next(
@@ -205,5 +209,38 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     token
+  });
+});
+
+exports.updatePassword = catchAsync(async (req, res, next) => {
+  // 1) Get user from collection
+  const user = await User.findById(req.user.id).select('+password');
+
+  if (!user) {
+    return next(new AppError('User not found', 404));
+  }
+
+  // 2) Verify current password
+  const isPasswordCorrect = await user.correctPassword(
+    req.body.oldPassword,
+    user.password
+  );
+
+  if (!isPasswordCorrect) {
+    return next(new AppError('Your current password is incorrect', 401));
+  }
+
+  // 3) Update password
+  user.password = req.body.newPassword;
+  user.passwordConfirm = req.body.passwordConfirm;
+  await user.save();
+
+  // 4) Log user in, send JWT
+  const token = signToken(user._id);
+
+  res.status(200).json({
+    status: 'success',
+    token,
+    message: 'Password updated successfully'
   });
 });
