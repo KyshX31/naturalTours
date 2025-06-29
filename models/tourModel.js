@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const slugify = require('slugify');
+const User = require("./userModel")
 // const validator = require('validator');
 
 const tourSchema = new mongoose.Schema(
@@ -77,7 +78,32 @@ const tourSchema = new mongoose.Schema(
     secretTour: {
       type: Boolean,
       default: false
+    },
+    startLocation: {
+      //In order to specify GeoJSON.
+
+      type: {
+        type: String,
+        default: "Point",
+        enum: ['Point']
+      },
+      coordinates: [Number],
+      address: String,
+      description: String,
+    },
+    locations: [
+      {
+        type: {
+          type: String,
+          default: "Point",
+          enum: ["Point"]
+        },
+        coordinates: [Number],
+        address: String,
+        description: String,
     }
+    ],
+    guides: Array,
   },
   {
     toJSON: { virtuals: true },
@@ -94,6 +120,19 @@ tourSchema.pre('save', function(next) {
   this.slug = slugify(this.name, { lower: true });
   next();
 });
+
+
+// We will now reference the document, and not embed (Below)
+// tourSchema.pre("save", async function (next) {
+//   // const guidesPromises = this.guides.map(async id => await User.findById(id));
+//   const guidesPromises = this.guides.map(async function (id) {
+//     return await User.findById(id);
+//   });
+//   await Promise.all(guidesPromises);
+// next();
+// })
+// We will now reference the document, and not embed (Above)
+
 
 // tourSchema.pre('save', function(next) {
 //   console.log('Will save document...');

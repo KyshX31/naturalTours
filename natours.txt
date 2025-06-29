@@ -1,0 +1,57 @@
+1-    Users -----------------------> Reviews: (Parent Referencing. 1 to many Relationship between Users and Reviews.)
+        1 to many relationship in between them.
+
+
+
+
+2-    Tours ---------------------> Reviews: (Parent Referencing). 
+
+
+
+3-    Tours <--------------------> Locations: Few to Few Relationship (A Version of Many to Many Relationship).
+                                    Location inside tours and tours inside locatins. . . 
+
+
+
+4-    Tours <---------------------> Users: (It is a few to few relationship.)
+                                    Because: 1 tours can have few Tour Guides.
+                                    1 Guide can be guiding few tours. (Reference or Embed can be used this case using mongoose.)
+
+
+
+5-   Tours ------------------------> Bookings: 1 tour can have many bookings.
+
+
+
+6-   Users ------------------------> Bookings: 1 user can have many bookings.
+
+
+
+
+Lecture 150:
+
+--GeoSpatial Data is what mongo db supports out of the box.
+--It is supported by MongoDB out of the box.
+--Location will be written in the tour model.
+--We, in GeoJSON, first will write longitudes and later latitudes. [Number: Longitude, Number: Latitude];
+--Start location is just an object now, but to create a document out inside a doc, it needs to be an array.
+--Now the Jonas will delete the dev datas, and then import the latest data.
+
+LECTURE: 151
+--we are gonna embed user document into the tour document.
+--When creating the tour document, the user will simply put the array of user ids.
+--
+
+
+
+ LECTURE: 152:
+-- Now that we knew the drawbacks of embeeding, now we will reference the tour
+ guides into the tour documents.
+--THE MAIN CONCERN: Tours and Users will remain as completely separate entities in our DBs.
+--We are gonna learn about REFERENCING in mongoose actually. 
+--We are gonna now make it as type:guides:[type: mongoose.Schema.ObjectId];
+--We are gonna make it as an array now.
+--
+
+
+
