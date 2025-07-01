@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const slugify = require('slugify');
-const User = require("./userModel")
+const Review = require('./reviewModel');
+
+const User = require("./userModel");
 // const validator = require('validator');
 
 const tourSchema = new mongoose.Schema(
@@ -103,8 +105,25 @@ const tourSchema = new mongoose.Schema(
         description: String,
     }
     ],
-    guides: Array,
-  },
+    // guides: Array, //used before for some reason. . 
+
+    // guides: [
+    //   {
+    //     type: mongoose.Schema.ObjectId,
+    //     ref: 'User',
+    //     // This case we don't even need a UserModel To be imported for some
+    //     //reason. . .
+    //   }
+    // ],
+    // reviews: [
+    //   {
+    //     type: mongoose.Schema.ObjectId,
+    //     ref: 'Review'
+    //   }
+    // ]
+
+
+  }, 
   {
     toJSON: { virtuals: true },
     toObject: { virtuals: true }
@@ -114,6 +133,18 @@ const tourSchema = new mongoose.Schema(
 tourSchema.virtual('durationWeeks').get(function() {
   return this.duration / 7;
 });
+
+tourSchema.virtual('reviews', {
+  ref: "Review",
+  foreignField: 'tour', //the field in the review model where the reference to tour's object id will be stored.
+  localField: '_id'
+});
+
+
+// tourSchema.pre(/^find/, function (next) {
+//   this.populate("reviews");
+//   next();
+// })
 
 // DOCUMENT MIDDLEWARE: runs before .save() and .create()
 tourSchema.pre('save', function(next) {
@@ -152,6 +183,16 @@ tourSchema.pre(/^find/, function(next) {
   this.start = Date.now();
   next();
 });
+
+tourSchema.pre(/^find/, function (next) {
+  //query middleware runs each time there is a query. So we will inject .populate every time there is a query to find tours.
+  this.populate({
+    path: "guides",
+    select: "-__v -passwordChangedAt"
+  });
+
+  next();
+})
 
 tourSchema.post(/^find/, function(docs, next) {
   console.log(`Query took ${Date.now() - this.start} milliseconds!`);

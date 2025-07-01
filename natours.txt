@@ -48,10 +48,49 @@ LECTURE: 151
 -- Now that we knew the drawbacks of embeeding, now we will reference the tour
  guides into the tour documents.
 --THE MAIN CONCERN: Tours and Users will remain as completely separate entities in our DBs.
---We are gonna learn about REFERENCING in mongoose actually. 
+--We are gonna learn about REFERENCING in MONGOOSE actually. 
 --We are gonna now make it as type:guides:[type: mongoose.Schema.ObjectId];
---We are gonna make it as an array now.
+--We are gonna make it as an array now (to treat it as a subdoc.);
+--Now we will place user object id inside of an array.
+-- like: ["fadsfadsf", "423sgfafdgad"];
+--(Not done: Jonas making the array of uses and posting tours with references
+        users and watching it in the compass).
+
+LECTURE: 153:
+--              populating the users.
+--Since in tours, we wanted to populate Users, we  make a reference to it and then:
+query.populate("users");
+--watched upto (3:14 mins.)
+--Now Jonas wanna push the query.populate("fieldName") thing into a query middleware.
+--Because every single time otherwise we shall have to write .populate("field"),
+        and also -_V and -_passwordChanged at to not show minus fields if we're only using populates.
+
+        and also update everything in all routes for this effect to reflect
+        everywhere.
+        --SO HE JUS THAS SETUP --QUERY MIDDLEWARES -- THAT'S ABOUT IT. 
+
+
+LECTURE NUMBER: 154
+
+//We want a review, rating and created at, and we would also want a reference to the tour that this review belongs 
+to and also the user who wrote this review.  Basucally 2 parent references in here.
+--we made a reviewSchema and then we linked our reviews with user and tour. Then we used virtuals: true and 
+        tovirtuals: true and we also formed some of key value pairs inside of the reviewModel.
+
+LECTURE NUMBER: 155
+--We created the review contreoller, and  wrote a review by signing up and logging in one user and using 
+his _id with tour's _id. Now we will populate in lecture: 156.
+
+LECTURE NUMBER: 156
+--This time we are gonna populate reviews both by tour data and the user data. 
+--We will chain populate method twice.
+--2 populates will query db twice.
+--took 23 mss my case for 2 db operations.
+--Completed the population
+--BUG (series of inclusions and exclusion error for --durationWeeks-- for some reason.);
+
+LECTURE NUMBERE 157
+--There is a detailed explaination in the video itself, on what needs to be done you know.
+--There is a convention for virtual populate now.
+--Without  actually persisting it into the DB, we store the array of IDs of reviews in tours collection.
 --
-
-
-
