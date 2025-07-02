@@ -93,4 +93,36 @@ LECTURE NUMBERE 157
 --There is a detailed explaination in the video itself, on what needs to be done you know.
 --There is a convention for virtual populate now.
 --Without  actually persisting it into the DB, we store the array of IDs of reviews in tours collection.
+
+LECTURE NUMBER 158
+--In the real world, the user id should come from the currently logged in user.
+--We would wanna make a request for the post, reviews,
+--we will follow the pattern for: /tour/tourObjectId123/reviews/reviewsObjectId (POST/GET REQUESTS).
+--we are now gonna implement the nested route as shown as above.
+--we will now implement it right away starting from the tour routes.
+-- 
+
+LECTURE NUMBER 159
+--In here now we are gonna implement the nested routes in express.
+--In 158, what we did is we created a route the way: (POST): tours/tourId/reviews.
+--Here we gave tourId in params, used the tourId and then imported the reviewController in tourRouter.
+--We then created a review out of tourId and UserId.
+--Basically in tour router, we had to import the review controller.
+--Now one thing to remember, we can create reviews in 2 ways: Being on Review Router, or by being on tour router.
+--We will have duplicate codes, if in case we wanna change anything.
+--We are now gonna learn about MERGE PARAMS in Express.
+--For the separation of concerns, we will now remove the piece of code that creates reviews from the 
+ tourRouter.
+--So this way --> import statement of reviewController <-- too is unnecessary.
+--Now Jonas Imports the reviewRouter inside of the tourRouter to connect between 2 routers (not controllers.)
+--BASICALLY FIRST EVER USE OF (ROUTER.USE('/:tourId/reviews', reviewRouter));
+--Since now we are redirected to the reviewRouter, reviewRouter will nowhere know about the tourId when referred.
+--We will now incoorporate mergeParams.
+--We will now in --reviewRouter do: const router = express.Router({mergeParams: true});
+
+                WhAt DiD nOt WoRk TiLl NoW:
+a) Reviews: -> always [] after successfully creating reviwes.
+
+LECTURE NUMBER 160
+--ADDING A NESTED GET ENDPOINT --
 --
