@@ -125,4 +125,29 @@ a) Reviews: -> always [] after successfully creating reviwes.
 
 LECTURE NUMBER 160
 --ADDING A NESTED GET ENDPOINT --
+--ADDED
+
+LECTURE NUMBER 161
+--we added up some factory functions for delete. . . 
+--past 3 mins left to watch.
+--Delets a user too (of cour)
+
+LECTURE NUMBER 162
+--Creating a factory function for -updating- and -deleting-
+--Update: The patch functionality have been embedded in all the controllers, -review, tour and user controller.
+-- Implemented Update:
+--Implementing Create Handler (testing left):
+--slightly confused on implementation for creation of reviews as reviews are created in tour via user.
+--In creation for reviews, jonas makes up a new middleware function and he will inject
+  that middleware function into the reviewrouter, that will possibly remove the hurdle of checking up of
+  the req.body.user and req.body.tourId are either non existent, if not existent for sure
+  then, that middleware fn would set it in the body for creation of reviews.
+--Required checking the valid Object IDs and all in my case.
+--checking in postman is left. (***********SOME THINGS ARE STILL LEFT TO BE DONE ***********)
+--
+
+LECTURE NUMBER 163
+--Implementing the getOne router handler.
+--Instead for us for having just getting a data, we sometimes have a populate options.
+--const doc  = await Model.findById(req.params.id).populate('reviews');
 --

@@ -1,7 +1,9 @@
 const { resource } = require("../app");
 const Review = require("../models/reviewModel");
 const {catchAsync} = require("../utils/catchAsync");
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
+const factory = require("./handlerFactory");
+
 
 exports.getAllReviews =  catchAsync(async function(req,res,next){
     const filter = {};
@@ -9,7 +11,7 @@ exports.getAllReviews =  catchAsync(async function(req,res,next){
     //
     const reviews = await Review.find(filter);
 
-res.status(200).json({
+    res.status(200).json({
     status: "Success",
     results: reviews.length,
     data: {
@@ -38,4 +40,9 @@ exports.createReview = catchAsync(
         })
     }
 );
+// slightly confused with createReview now. this creation of reviews by user on tour is slightly different than usual implementation.
 
+
+exports.deleteReview = factory.deleteOne(Review);
+exports.updateReview = factory.updateOne(Review);
+// Reviews too have been added up now. 

@@ -30,7 +30,7 @@ router
   .patch(tourController.updateTour)
   .delete(
     authController.protect,
-    authController.restrictTo('user'),
+    authController.restrictTo('admin'),
     tourController.deleteTour
   );
 
@@ -39,12 +39,5 @@ router.route('/:tourId/reviews').post(
   authController.restrictTo("user"),
   reviewController.createReview
 );
-
-
-
-
-
-
-
 
 module.exports = router;
