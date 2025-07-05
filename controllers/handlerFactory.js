@@ -1,6 +1,7 @@
 const {catchAsync} = require('./../utils/catchAsync');
 const AppError = require('./../utils/AppError');
 const { model } = require('mongoose');
+const APIFeatures = require('./../utils/apiFeatures');
 
 exports.deleteOne = Model=> catchAsync(async (req, res, next) => {
 const doc = await Model.findByIdAndDelete(req.params.id);
@@ -36,14 +37,14 @@ exports.updateOne = Model =>   catchAsync(async (req, res, next) => {
 exports.createOne = Model => catchAsync(async (req, res, next) => {
 
 //********REVIEWS CREATION LEFT TO BE YET IMPLEMENTED */
-    const doc = await Tour.create(req.body);
+    const doc = await Model.create(req.body);
 
     if(!doc) return next(new AppError("No document was created right away", 500));
 
     res.status(201).json({
         status: 'success',
         data: {
-            tour: doc
+            data: doc
         }
     });
       });
@@ -57,7 +58,8 @@ exports.getOne = (Model, popOptions) => {
  return   catchAsync(async(req,res,next)=>{
         //
         let query = Model.findById(req.params.id);
-        if(popOptions) query = query.populate(popOptions);
+
+     if (popOptions) query = query.populate(popOptions); 
         
         const doc = await query;
 
@@ -75,3 +77,25 @@ exports.getOne = (Model, popOptions) => {
     })
 }
 
+exports.getAll = Model => catchAsync(async (req, res, next) => {
+    // if it is to find a review, then tour route handler will have tourID, 
+    //we will filter the reviews by that tourID.
+    const filter = {};
+    if (req.params.tourId) filter.tour = req.params.tourId;
+    // EXECUTE QUERY
+    const features = new APIFeatures(Model.find(filter), req.query)
+        .filter()
+        .sort()
+        .limitFields()
+        .paginate();
+    const doc = await features.query.explain();
+
+    // SEND RESPONSE
+    res.status(200).json({
+        status: 'success',
+        results: doc.length,
+        data: {
+            doc
+        }
+    });
+});

@@ -5,20 +5,22 @@ const mongoose = require("mongoose");
 const factory = require("./handlerFactory");
 
 
-exports.getAllReviews =  catchAsync(async function(req,res,next){
-    const filter = {};
-    if (req.params.tourId) filter.tour = req.params.tourId;
-    //
-    const reviews = await Review.find(filter);
+// exports.getAllReviews =  catchAsync(async function(req,res,next){
+//     // const filter = {};
+//     // if (req.params.tourId) filter.tour = req.params.tourId;
+//     //
+//     const reviews = await Review.find(filter);
 
-    res.status(200).json({
-    status: "Success",
-    results: reviews.length,
-    data: {
-        reviews
-    }
-})
-});
+//     res.status(200).json({
+//     status: "Success",
+//     results: reviews.length,
+//     data: {
+//         reviews
+//     }
+// })
+// });
+
+exports.getAllReviews = factory.getAll(Review); //getAll handler of the factory will handle
 
 exports.createReview = catchAsync(
     // Allow the nested routes. . . 
@@ -46,3 +48,4 @@ exports.createReview = catchAsync(
 exports.deleteReview = factory.deleteOne(Review);
 exports.updateReview = factory.updateOne(Review);
 // Reviews too have been added up now. 
+exports.getReview = factory.getOne(Review); 

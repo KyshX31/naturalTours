@@ -14,24 +14,26 @@ exports.aliasTopTours = (req, res, next) => {
   next();
 };
 
-exports.getAllTours = catchAsync(async (req, res, next) => {
-  // EXECUTE QUERY
-  const features = new APIFeatures(Tour.find(), req.query)
-    .filter()
-    .sort()
-    .limitFields()
-    .paginate();
-  const tours = await features.query;
+// exports.getAllTours = catchAsync(async (req, res, next) => {
+//   // EXECUTE QUERY
+//   const features = new APIFeatures(Tour.find(), req.query)
+//     .filter()
+//     .sort()
+//     .limitFields()
+//     .paginate();
+//   const tours = await features.query;
 
-  // SEND RESPONSE
-  res.status(200).json({
-    status: 'success',
-    results: tours.length,
-    data: {
-      tours
-    }
-  });
-});
+//   // SEND RESPONSE
+//   res.status(200).json({
+//     status: 'success',
+//     results: tours.length,
+//     data: {
+//       tours
+//     }
+//   });
+// });
+
+exports.getAllTours = factory.getAll(Tour); //getAll handler of the factory will handle
 
 // exports.getTour = catchAsync(async (req, res, next) => {
 //   const tour = await Tour.findById(req.params.id).populate('reviews');
@@ -57,7 +59,10 @@ exports.getAllTours = catchAsync(async (req, res, next) => {
 // });
 // changed as below:
 
-exports.getTour = factory.getOne(Tour, { path: "reviews" });
+exports.getTour = factory.getOne(Tour, { path: "reviews" }); //getOne handler of the factory will handle
+//fetching data from DB and populate and return.
+
+
 
 // exports.createTour = catchAsync(async (req, res, next) => {
 //   // const newTour = new Tour({})

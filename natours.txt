@@ -150,4 +150,29 @@ LECTURE NUMBER 163
 --Implementing the getOne router handler.
 --Instead for us for having just getting a data, we sometimes have a populate options.
 --const doc  = await Model.findById(req.params.id).populate('reviews');
+--All completed for get One
+
+
+LECTURE NUMBER 164
+--adding a /me endpoiont.
+--for a /me endpoint, we will need: we will need to watch a id from the req.user;
+--Here we will fake it as if id is coming in request params. 
+--Other implementation would be similar to getting a user.
+--Here what we did was we injected a middleware before the /specificUserId 
+  middleware. And if a user visits /me then, we will programatically put the UserId
+  in the params of the logged in user. and boom. It works.
+
+LECTURE NUMBER 165
+--Here we will add up the missing authorisation and authentication for any user.
+--It is done in Router Basically.
+--Jonas Protects some of routes using ROuter.use() method of express.
+--Configures RBACs on some of routes on 3 different resources.
+--Chapter ends here.
+
+LECTURE NUMBER 166
+--We basically imported some of resources into our DB from the file system.
+--Imported tours, reviews and users resources.
+
+LECTURE NUMBER 167
+--We are now improving the read preformances of the Database with indexes.
 --

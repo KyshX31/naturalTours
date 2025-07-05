@@ -10,7 +10,8 @@ router.route("/")
 
 
 router.route('/:id')
-    .delete(authController.protect, authController.restrictTo("user"), reviewController.deleteReview);
+    .delete(authController.protect, authController.restrictTo("user"), reviewController.deleteReview)
+    .get(authController.protect, reviewController.getReview)
 
 
 

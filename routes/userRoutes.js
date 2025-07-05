@@ -20,9 +20,10 @@ router.patch('/updateMyPassword', authController.updatePassword);
 // Admin routes
 router
   .route('/')
-  .get(authController.restrictTo('admin'), userController.getAllUsers)
+  .get(authController.restrictTo('user  '), userController.getAllUsers)
   .post(userController.createUser);
 
+router.route('/me').get(userController.getMe, userController.getUser);
 router
   .route('/:id')
   .get(userController.getUser)
