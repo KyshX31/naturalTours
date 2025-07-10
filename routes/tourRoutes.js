@@ -40,4 +40,11 @@ router.route('/:tourId/reviews').post(
   reviewController.createReview
 );
 
+
+
+router.route('/tours-within/:distance/center/:latLng/unit/:unit').get(tourController.getToursWithin);
+
+router.route('/distance/:latlng/unit/:unit').get(tourController.getDistances);
+
+
 module.exports = router;

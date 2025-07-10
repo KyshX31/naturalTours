@@ -1,5 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
+const pug = require('pug');
 
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
@@ -8,6 +9,9 @@ const AppError = require('./utils/AppError');
 const globalErrorHandler = require('./controllers/errorController');
 
 const app = express();
+
+app.set('view-engine', 'pug');
+app.set('views', `${__dirname}/views`);
 
 // 1) MIDDLEWARES
 if (process.env.NODE_ENV === 'development') {

@@ -11,7 +11,11 @@ router.route("/")
 
 router.route('/:id')
     .delete(authController.protect, authController.restrictTo("user"), reviewController.deleteReview)
-    .get(authController.protect, reviewController.getReview)
+    .get(authController.protect, reviewController.getReview).patch(
+        authController.protect, authController.restrictTo("user"), reviewController.updateReview
+    );
+
+
 
 
 

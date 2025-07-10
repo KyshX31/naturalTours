@@ -1,3 +1,5 @@
+//***********************************************************************************//
+//**********************************************************************************//
 1-    Users -----------------------> Reviews: (Parent Referencing. 1 to many Relationship between Users and Reviews.)
         1 to many relationship in between them.
 
@@ -121,7 +123,7 @@ LECTURE NUMBER 159
 --We will now in --reviewRouter do: const router = express.Router({mergeParams: true});
 
                 WhAt DiD nOt WoRk TiLl NoW:
-a) Reviews: -> always [] after successfully creating reviwes.
+a) Reviews: -> always [] after successfully creating reviwes. (skipped as it took lots of time, will come back later.)
 
 LECTURE NUMBER 160
 --ADDING A NESTED GET ENDPOINT --
@@ -130,7 +132,7 @@ LECTURE NUMBER 160
 LECTURE NUMBER 161
 --we added up some factory functions for delete. . . 
 --past 3 mins left to watch.
---Delets a user too (of cour)
+--Delets a user too (of course)
 
 LECTURE NUMBER 162
 --Creating a factory function for -updating- and -deleting-
@@ -143,7 +145,7 @@ LECTURE NUMBER 162
   the req.body.user and req.body.tourId are either non existent, if not existent for sure
   then, that middleware fn would set it in the body for creation of reviews.
 --Required checking the valid Object IDs and all in my case.
---checking in postman is left. (***********SOME THINGS ARE STILL LEFT TO BE DONE ***********)
+--checking in postman is left. (***********POSTMAN THINGS ARE STILL LEFT TO BE DONE ***********)
 --
 
 LECTURE NUMBER 163
@@ -175,4 +177,74 @@ LECTURE NUMBER 166
 
 LECTURE NUMBER 167
 --We are now improving the read preformances of the Database with indexes.
+--Will do create some Indexes later.
+--(❌❌)
+
+LECTURE NUMBER 168
+--Removing the constant queries of the related data sets.
+--When a review will be created, we will find the way to update tour.
+--We will be able to show up number of ratings and average of all the ratings.
+--We never ever calculated average ratings quite before, Now that we will calculate it when a review is created or deleted.
+--Using reviewModel, we create a function in review model, and using the fn, we will calculate the average of the tours there.
+-- The function will at the end update the tour document too.
+--We will make a  middleware that will keep track of all the documents.
+--
+
+
+LECTURE NUMBER 169
+--(findByIdAndUpdate & findByIdAndDelete), Now we are gonna update the reviews upon update and delete.
+--Fragments of documentsa are obtained by Find+Update or Find+Delete methods, so we won't be able to run the 
+  ReviewCalculation method as above.
+-- Testing is left for this one - whether our implementation of handling the ratingsAverage
+   would work or not. (❌❌)
+--(Did not work on update and delete.);
+--Need to rethink again.
+
+LECTURE NUMBER 170
+--We are gonna use a simple trick to  let users not write more than one review for each tour.
+--Each User can review one tour and that too only once.
+--Since the new objectId made by combination of user and posts have been made unique.
+--(❌❌)
+
+LECTURE NUMBER 171
+--We are gonna learn about geospatial queries.
+--Helps users search for tours in a specific points.
+--Distance would be of any miles say 250 mi.
+--I can being in Nepal, search for tours based within Nepal.
+--used some of geospatial queries now.
+--will use somewhere or sometime.
+--used $geoWithin and $centerSphere mongo operators now.
+--discovered Bunch others in their site.
+
+LECTURE NUMBER 172
+--Here we will discover about the distances between start location and the point where tour is located.
+--We will use a $geoNear aggregation.
+--This requires one of the key to be indexed for using geoNear.
+--We index: startlocation:'2dSphere'. It is mandatory.
+--Implemented totally.
+
+
+
+LECTURE NUMBER 173
+--Creating the API Documentation for our APIs.
+--We will now manage the passwords in a variables. (--More to watch later--).
+--More to be done later.
+
+//*********************SERVER SIDE RENDERING ********************************//
+//**************************************************************************//
+
+LECTURE NUMBER 175
+--We are now gonna implement the server side rendering in our project.
+--We can now log in and sign up in here.
+--We can see all the reviews of the users and we can also open up the personal user account.
+--We can also check all the bookings of the user.
+--We will implement the maps into our project too.
+
+
+LECTURE NUMBER 176
+--This deals about setting up the pug templates and working with it.
+--We can easily fill out the template and fill up the data using pug.
+--There are couple of other templating engines too available like handlebars or ejs.
+--Pugs are also called Views in Express because they are views in MVC Architecture.
+--Now we will create up a views folder.
 --

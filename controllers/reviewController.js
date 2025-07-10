@@ -32,6 +32,7 @@ exports.createReview = catchAsync(
         if (!req.body.user) {
             req.body.user = req.user.id;
         }
+
         const newReview = await Review.create(req.body);
         //
         res.status(201).json({

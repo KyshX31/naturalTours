@@ -186,3 +186,104 @@ exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
     }
   });
 });
+
+exports.getToursWithin = catchAsync(async function (req, res, next) {
+  const { distance, latLng, unit } = req.params;
+  //all these will come from req.params.
+
+  const [lat, lng] = latLng.split(','); //assigning the lat and lng into their own variables.
+
+  const radius = unit === 'mi' ? distance / 3963.2 : distance / 6378.1; //converting the distance to radians, if the unit is miles, we divide by 3963.2, if it is kilometers, we divide by 6378.1.
+
+
+  if (!lat || !lng) {
+    return next(new AppError('Please provide lat and lng in the format lat,lng', 400));
+  }
+
+  console.log(distance, lat, lng, unit);
+
+  const tours = await Tour.find({
+    startLocation: {
+      //we need to add an index to the start location.
+
+      $geoWithin: {
+
+        $centerSphere: [[lng, lat], radius]
+
+      }
+    }
+  })
+
+
+  res.status(200).json({
+    status: 'success',
+    results: tours.length,
+    data: {
+      tours
+    }
+  });
+  // res.status(200).json({
+  //   data: {
+  //     distance,  // res.status(200).json({
+  //   data: {
+  //     distance,
+  //     lat,
+  //     lng,
+  //     unit
+  //   }
+  // })
+  //     lat,
+  //     lng,
+  //     unit
+  //   }
+  // })
+
+});
+
+
+exports.getDistances = catchAsync(async function (req, res, next) {
+  //
+  const { latlng, unit } = req.params;
+  const [lat, lng] = latlng.split(',');
+  if (!lat || !lng) {
+    return next(new AppError('Please provide lat and lng in the format lat,lng', 400));
+  }
+  const multiplier = unit === 'mi' ? 0.000621371 : 0.001; //if the unit is miles, we multiply by 0.000621371, if it is kilometers, we multiply by 0.001. 
+
+  const distances = await Tour.aggregate([
+
+
+    {
+      $geoNear: {
+        near: {
+          type: 'Point',
+          coordinates: [lng * 1, lat * 1] //This is my location, we are multiplying by 1 to convert the string to number.
+        },
+        distanceField: 'distancie', //this is the field where we will store the distance.
+        spherical: true, //this is for the earth like sphere, where all our data are located.
+        //BY DEFAULT, THE DISTANCE IS IN METERS, SO WE NEED TO CONVERT IT TO KILOMETERS OR MILES.
+        //if the unit is miles, we multiply by 0.000621371, if it is kilometers, we multiply by 0.001.
+        distanceMultiplier: multiplier //this is for the unit conversion, if it is miles, we multiply by 0.000621371, if it is kilometers, we multiply by 0.001.
+      }
+    },
+
+    {
+      //project stage now. We will project the fields we want to return.
+      $project: {
+        distancie: 1,
+        name: 1, //name of  tour data
+        slug: 1
+      }
+    }
+  ]);
+
+
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      distances
+    }
+  })
+});
+
