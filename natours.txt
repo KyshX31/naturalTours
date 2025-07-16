@@ -247,4 +247,57 @@ LECTURE NUMBER 176
 --There are couple of other templating engines too available like handlebars or ejs.
 --Pugs are also called Views in Express because they are views in MVC Architecture.
 --Now we will create up a views folder.
+--Now we set view engiene to -pug and so on and so forth.
+--We now have created everything for our pug things.
+--Now inside pug, we are gonna create -base.pug & then check if it will work. . . 
 --
+
+LECTURE NUMBER 177
+--Now we are gonna implement a pug in our code.
+--The variables that we will pass inside the pug's data as: .render('base', {key:value //This is called locals});
+--To show locals we follow the syntax: p1= key; value of the key will be rendered automatically.
+--Each assest confirms it's own HTTP request.
+--so in favicon, there's img/favicon.png, so how does it work?
+--It works by It's own GET request being fired.
+--Now we're gonna see how we can send data to the pug templates.
+--We can create comments now. . . And the thing is that we can create 2 kinds of comments. 
+-- We can embed JS in our code:   Eg: h2= message.toUpperCase();
+--Unbuffered code are code that's not gonna add anything to the output.
+        
+        Eg: -const x = 9;
+             h2 = 2 * x;
+
+             p This is just some text.
+--We did some computations. We will now convert our Starter HTML file into pug template.
+
+
+
+LECTURE NUMBER 178
+-- Including the file i.e one template to an another template now.
+--done
+
+LECTURE NUMBER 179
+--This was all about including the files into the main pug file.
+--Syntax: include pugFileName.pug
+
+LECTURE NUMBER 180:
+--This lecture is all about using -extends-. Using which we can use the same base layout for all the pages.
+--We can extend one pug to an another Can be applied to every single page we can render.
+--we made a overview page render route.
+--We would also want a route to /tour, so we made it.
+--Base template is the parent template and this process is also called extending.
+--Now in the overview page, it will extend the base template.
+--Understood the differences betweeen extends and includes.
+--The base template if is extended on the child template, then parent bases' 
+
+
+LECTURE NUMBER 181
+--Just with the resources, we are gonna create controller for the views.
+--181 has come to an end with me building some routes for our views.
+
+LECTURE NUMBER 182
+--Now we're building the tours overview page.
+--we made upto showing up 9 tours but data shown are not dymamic even now. (NOT DONE IN THE PRACTICE)
+
+LECTURE NUMBER 183
+--Here now we are going to
