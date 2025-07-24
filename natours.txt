@@ -300,4 +300,72 @@ LECTURE NUMBER 182
 --we made upto showing up 9 tours but data shown are not dymamic even now. (NOT DONE IN THE PRACTICE)
 
 LECTURE NUMBER 183
---Here now we are going to
+--Here now we are going to basically fill the actual cards with the actual data.
+--if in tours we are getting data then we will loop tours and for every tour, we show tour's properties in each cards.
+--Jonas now fills up different data into the tour template.
+--The example includes: Tour length, tour summary, tour description and all that.
+--Now goes start dates. We do: tours.startDaates
+--Now we will add relative URLs.
+--We added a '|' or 'pipeline' to make it such tha we will get an empty space like as of using <br>
+--W
+
+
+LECTURE  NUMBER 184 
+--We are gonna build up a TOUR DETAIL Page.
+--We are just gonna leave the map for next lecture. But for now we will work upto Showing up reviews.
+--For showing indivudual tours, we shall need to show reviews + tour guides +  
+--Render templates using the data from step 01 again.
+--We will search the tours with the help of slug. . 
+--We should:
+        1- Find the dedicated tour.
+        2-Populate the tour data with Reviews.
+        3-Respond the user with necessary template.
+
+--We have already made the PUG template already.
+--Jonas also made the Indivudual tour overview page.
+--Now we will get some visually appealing website.
+--Now we are gonna look about next pug fetature called: PUG MIXINS.
+--For this, we will have to make a preprocessor box.
+--We write mixin for this reason, and then write the name of the mixin.
+--Jonas makes a preprocessor like PUG MIXIN where he can pass in: 1-Label, 2-Text, and 3-Icon.
+--Usage:
+        +mixinName(...args);
+        Mixin is like a function.
+
+--Similarly the part 01 of the tour completion portion has now come into an end.
+
+LECTURE NUMBER 185
+--Building the Tour Detail Page.
+--Now we are looping for all the tour guides data from the DB  and then we are basically showing it in our page.
+--We will incoorporate each loop in the array.
+--We will use:
+        each guides in tour.guides.
+--Now we are gonna write a role of the user too.
+--Since in DB we saved roles as lead-guide and tour-guide and all, but don't wanna show up "-",
+  We shall incoorporate --conditionals-- in pug template.
+--We will some Unbuffered code and using vanilla js, remove the "-" from the mid roles.
+--Or Do anything similar.
+--Now for the description box, In DB, we are saving one paragraph for description, crux is we are using \n to distinguish new lines and show up 
+  the new line.
+  
+--Coming onto reviews now, Jonas populates the review.
+--Time to show up  stars now for the ratings we have.
+--Applies logic to apply for stars in the reviews field.
+--Now We gotta go to the "/" page.
+--We can also create a separate file for mixins. Jonas calls it as __reviewCard.pug.
+--We will write: __reviewCard.pug and then where we should use it: we do: include __reviewCard.pug.
+--We will also change the call to action field now. 
+--Jonas will now maintain the --call to action-- Now. And then:  Now the page is completed now.
+
+
+LECTURE NUMBER 186:
+--We are now gonna integrate --mapbox-- in our project.
+--The mapbox library now works in the  front end.
+--We will write some javascript in the client side, and then: we are gonna integrate it.
+--We say -block head.
+--Jonas basically extracts out the locations from the server and puts the array of lcoations, converting them into strings into locations variable.
+--Now to avail it in JS file, it is done this way: JSON.parse(converted String);
+
+
+LECTURE NUMBER 187
+--

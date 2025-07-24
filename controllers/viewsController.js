@@ -7,8 +7,7 @@ exports.getOverview = catchAsync(async (req, res) => {
 
     console.log("Get overview page is being served");
     res.status(200).render('base.pug', {
-        title: 'All Tours',
-        message: 'Welcome to the home page! This one is dynamic too'
+        tours: tours,
     });
 });
 
