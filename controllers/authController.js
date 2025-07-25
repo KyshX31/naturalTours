@@ -84,6 +84,24 @@ exports.login = catchAsync(async (req, res, next) => {
   });
 });
 
+
+
+exports.logOut = catchAsync(async (req, res, next) => {
+  res.cookie('token', 'You are now logged out of the system', {
+    expires: Date.now()+10*1000,
+    httpOnly: true
+  });
+  res.status(200).json({
+    status: 'success',
+    message: 'You are now logged out of the system'
+  });
+});
+
+
+
+
+
+
 exports.protect = catchAsync(async (req, res, next) => {
   //1- Check if token exists
   //2- Chck if the token is valid

@@ -368,4 +368,139 @@ LECTURE NUMBER 186:
 
 
 LECTURE NUMBER 187
+--Integrating the mapbox now in our project.
+--Make an account on the mapbox and then: We are gonna itegrate the mapbox cdn into the page.
+--We are gonna incoorporate the append head technique now.
+--We are gonna put up the link: using block append head technique.
+--In mapbox.js file, We are gonna append the access token there.mapboxgl.accessToken.
+--var map = new mapboxgl.Map({
+                                container: 'map' /*will put map on the id of map*/,
+                                style:'mapbox://styles/mapbox/streets-v11',
+                                center:[longitude, latitude] //Focuses the map on this center,
+                                zoom:4,
+                                interractive:true, //Boolean True or False,
+                                scrollZoom:false,
+                                clickTolerance: false //Boolean
+                             });
+
+--Create a mapbox token now.f
+--It loads the default map already.
+--Go to design studio in mapbox now.
+--Jonas now chooses the light map. Chooses the styles and then clicks on -use-
+--Now we are gonna get our access URL and style URL now.
+--Put it in the javascript code.
+--We can basically now zoom in, zoom out and basically do anything we want.
+--We can pin a centered coordinates, but by the way the using bound coordinates would be beneficial for array of coordinates,
+        basically we wanna show up map, showing all the available geolocation points.
+
+-- const bounds = new mapboxgl.LngLatBounds     ({
+                                                });
+--To log locations, we shall need markers.
+
+--                              locations.forEach(loc=>{
+                                        document.createElement('div');
+                                        el.className = 'marker',
+                                        new mapBoxGl.Marker(
+                                                {
+                                                        element: el,
+                                                        anchor: 'bottom', //places the bottom part of the marker into the exact GPS Coordinates.
+                                                }
+                                        )
+                                        }).setLngLat(loc.coordinates).addTo(map);
+
+                                        new mapboxgl.popup({offset:30}).setLngLat(loc.coordinates).setHTML(`<p>Day ${loc.day}: ${loc.description} </p>`).addTo(map);
+
+                                        bounds.extend(loc.coordinates
+                                        ); //Pass each of locations into  bounds.extend(indivudualLocation);
+
+--map.fitBounds(bounds,
+                                                                          {
+                                                                             top:200,
+                                                                             bottom:200,
+                                                                             left:100,
+                                                                             right:100
+                                                                           }); //Adds the padding of 50px to show all the pinned points.
+
+
+LECTURE NUMBER 188
+--We are now gonna add up the login screen to make sure that the user can now log in.
+--We are now gonna add the '/login' route handler which gives out HTML to us that shows us up the login screen.
+--We will do it in the views folder.
+--exports.getLoginForm = (req,res)=>{ res.status(200).render('login') };
+--call it login.pug
+--In login.pug ---> extends base;
+--block content
+--Let's go onto our login router now. 
+--Sign in handler is made.
+--Now we are going to prepare the sign up page. (SIGN UP WAS GONNA BE AS LONG AS LOGGING IN.);
+--Jonas has made up a CSS file that includes the validation logic for the form.
+--
+--
+
+LECTURE NUMBER 189
+--Using our login API to actually log in the users.
+--We will incoorporate the cookie thingy too to the user to check user sessions.
+--We will be working on the client side JS code then.
+--We created the -login.js- file inside of the public > js > login.JS
+
+--document.querySelector('.form').addEventListener('submit', e =>{
+                                                                 e.preventDefault();
+                                                                 const email = email-value-from-email-element
+                                                                 const password = password-value-from-pswd-element
+                                                                 })
+
+--We added the login.js file inside the pug template of the login.
+--We showed the password and email in the console. (Just for testing);
+--We are going to use axios to make a HTTP requests right from the next lecture.
+-- <script src=" https://cdn.jsdelivr.net/npm/axios@1.11.0/dist/axios.min.js "></script>
+-- It exposes the  axios object into the global scpope that we can use it.
+-- const res = await axios({
+                method: 'POST',
+                url   : '',
+                data: {//json can be sent in here with the help of Axios.}
+        })
+--Axios triggers an error if server responds any non 2xx (Other than status not starting with 2) status codes to us.
+--We made a try and catch block to incoorporate the login handler.
+--In case of errors, axios puts error inside ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~errObject.response.data;
+--Because the browser will use the cookie, We have to install other package inside of our backend called cookieparser.
+--const cookieParser = require('cookie-parser');
+--Subscequently, We inject the middleware exposed by cookie-parser globally to all the requests using  express' middleware: app.use('cookieParser');
+--app.use((req,res,next)=>{
+
+                        });
+--Now we are going to watch the cookies inside of the backend using req.cookies. 
+--this logs cookies to us. (as object. . {jwt: jwtData});
+--Now Jonas imports the auth controller in the views. 
+--And then: authController.procect is injected inside the views routes.
+--Jonas deletes the cookies from the front end, and this logs out the user.
+--After logging in, we will get our JWT, which we will store again in the req.cookies. . .
+  and everytime server gets the JWT, it authenticates the user, then gives or revokes an access to certain routes.
+--When the user is logged in, we do not wanna show the login and signup thingy on the top of the screen, so we will basically remove it in the next lecture.
+--On coming lectures, we will also incoorporate popups for displaying success or errors.
+--
+
+LECTURE NUMBER 190
+--This is the part 02 of implementing the login functionality.
+--We are going to conditionally render the login and signup block watching if a user is logged in or not.
+--We are now going to make a new middleware that sees if a user is logged in or not for like all the routes and show or hide the login/register heading in the navbar.
+-isLoggedIn middleware will take care of that.
+--It will only check if a JWT Exists and it resolves to a user that exists in DB and user has not changed the password, returns next(); immediately.
+--We will use res.locals.user, then inside of a template, there will be a user.
+--res.locals.user = currentUser will hold the local variables needed for the user. Then we will call next();
+
+--LOGIC OF THE MIDDLEWARE:
+                        a- If No JWT in cookies: return next();
+                        b- If Password was changed after JWT was issued,  return next();
+                        c- Otherwise, assign res.locals.user  = currentUser and return next();
+                        This way if locals is having user object inside of it, then the user is logged in, else user is not logged in.
+--By using the Locals, we are determining if we should should show up a login/register or any other screens than that.
+
+
+LECTURE NUMBER 191
+
+--Let's now finish up the logging functionality by now.
+--Jonas creats alerts.js
+--Also talks about creating the bundlers like webpack.
+--We installed a package called: parcel bundler and wrote the entry js file + output location + output file name in the script in package.json.
+--We minified one of JS file we had.
 --
