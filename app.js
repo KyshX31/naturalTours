@@ -10,6 +10,9 @@ const viewRouter = require('./routes/viewRoutes');
 const AppError = require('./utils/AppError');
 const globalErrorHandler = require('./controllers/errorController');
 
+const cookieParser = require("cookie-parser");
+
+
 const app = express();
 
 app.set('view-engine', 'pug');
@@ -30,6 +33,7 @@ if (process.env.NODE_ENV === 'development') {
 // }
 
 app.use(express.json());
+app.use(cookieParser());
 // app.use(express.static(`${__dirname}/public`));
 app.use(express.static(path.join(__dirname, 'public'))); //This is the path to the public folder, where we have our static files like css, js, images, etc
 app.use(express.urlencoded({ extended: true })); //This is for parsing the body of the request, so that we can access the data in req.body
@@ -44,6 +48,10 @@ app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
   next();
 });
+
+
+
+
 
 // 3) ROUTES
 app.use('/api/v1/views', viewRouter);

@@ -1,5 +1,22 @@
 extends base
 
 block content
-    main.main 
-     
+  section.section-login
+    .login
+      h2.heading-secondary Login to your account
+
+      form.form 
+        .form__group
+          label.form__label(for='email') Email address
+          input#email.form__input(type='email', name='email', placeholder='you@example.com', required)
+
+        .form__group
+          label.form__label(for='password') Password
+          input#password.form__input(type='password', name='password', placeholder='••••••••', required)
+
+        .form__group
+          button.btn.btn--green(type='submit') Login
+
+block scripts
+    script(src='https://cdn.jsdelivr.net/npm/axios@1.12.2/dist/axios.min.js')
+    script(src='/js/login.js')

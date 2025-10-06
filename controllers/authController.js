@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+console.log('The jwt required is: ', jwt);
 const { promisify } = require('util');
 const crypto = require('crypto');
 
@@ -73,8 +74,8 @@ exports.login = catchAsync(async (req, res, next) => {
   const token = signToken(userExists._id);
 
   res.cookie('token', token, {
-    httpOnly: true,
-    maxAge: 24 * 60 * 60 * 1000,
+    // httpOnly: true,
+    maxAge: 2400 * 60 * 60 * 100000,
     secure: process.env.NODE_ENV === 'production'
   });
 
@@ -83,6 +84,8 @@ exports.login = catchAsync(async (req, res, next) => {
     token
   });
 });
+
+
 
 
 
@@ -118,7 +121,17 @@ exports.protect = catchAsync(async (req, res, next) => {
   ) {
     token = req.headers.authorization.split(' ')[1];
     console.log('token is', token);
-  } else {
+  } 
+  
+  else if(req.cookies.token){
+    //
+    console.log(req.cookies.token)
+    console.log("checking if a user is strong enough to pass in cookies with jwt to me.", req.cookies.token);
+    token = req.cookies.token;
+     
+  }
+ 
+  else {
     console.log('no token no protection');
     return next(new AppError('User is not logged in. Please Log In', 401));
   }
@@ -146,6 +159,33 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
 
   req.user = userExists;
+  next();
+});
+
+
+//CHECK IF A USER IS LOGGED IN OR NOT BUT DO NOT SHOW ANY ERRORS IF A USER IS NOT LOGGED IN.
+//USAGE: ONLY IN  VIEW ROUTES.
+
+exports.isLoggedIn = catchAsync(async (req, res, next) => {
+  const token = req.cookies.token;
+
+   let decoded;  
+  try{
+   decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+  }
+  catch(err){
+     return next();
+  }
+
+  const userExists = await User.findById(decoded.id);
+
+  if (!userExists) {
+    return next();
+  }
+ if (userExists.changedAfter(decoded.iat)) {
+    return next();
+  }
+  res.locals.user = userExists; 
   next();
 });
 

@@ -503,4 +503,359 @@ LECTURE NUMBER 191
 --Also talks about creating the bundlers like webpack.
 --We installed a package called: parcel bundler and wrote the entry js file + output location + output file name in the script in package.json.
 --We minified one of JS file we had.
+--Jonas imports the login handlers in login. . .
+--Jonas works onto creating the access tokens now. . . 
+--Jonas now appended mapbox script tag as is in the html itself because  using it with @babel thing did not work out.
+-- Jonas creats an alert window and then he basically will remove and show all the alerts.
+--catch(err){showAlert('err.response.data.message')};
+--Login and alert functionality have been successfully added up.
+--Logging out functionality is for the next lecture now.
+
+LECTURE NUMBER 192 
+--Now we are going to log out the Users from the system.
+--Since we are using httpOnly:true key and value. This does not allow us to modify/avail the cookies data in the frontend. 
+  So, we cannot do anything at all.
+--So, to log the users out, we should make a route, that sends a null value of the cookie's key to us.
+--Jonas makes a Route in the authController now in the name  of logout.
+   res.cookie(exactNamedKeyThatOfCookie: "You are now logged out of the system", {
+                                                                                expires: Date.now()+10*1000,
+                                                                                httpOnly: true
+                                                                                 });
+--Now Jonas works on login.js file and makes a function to show up the alerts when user gets logged out of the system.The 
+  function will basically do a a GET request to the server and in case of error shows the error in the UI.
+  And that's about it.In case of succes, Jonas does location.reload(true) in the system for Hard reload, (The reload without using the cache.);
+
+--CatchAsync handler will throw up an error to  global error handling middleware.
+--Jonas removes the catchsync handler basically from the logout controller.
+--We now have successfully  logged out user from our website. 
+
+--NEED TO REWATCH AGAIN...
+
+LECTURE NUMBER 193
+--Jonas goes to forest-hikerrr tour which does not even exist.
+--We will basically fix this thing now.
+--In viewsController.js, Jonas adds up some code inside viewsController, where if in case no tours are found, he throws new AppError object to the user.'
+--In errorController.js, Jonas basically adds some lines of code that: 
+--In sendErrorDev: (err, msg) => if in case the req.originalUrl starts with "/api", jonas renders the error page.
+--In sendErrorProd: (err, msg)=>  res.status.json({error})
+--Jonas makes in a error template inside views.js.
+--Jonas logs the error message for views pages in UI; For that we will extend our base template and: in the block content, we will insert main
+--Jonas shows some generic error message to the User.
+--We now have error handling Strategy for views in Production and in Development.
+
+
+LECTURE NUMBER 194
+--Now we are going to build the user account with ('/me') middleware.
+--We already have userAccount template there in account template.js.
+--We make mixins and all that and all those.
+--Using mixins, we will basically make some repetitive blocks, non repetitive.
+--Logout route: working.
+--Admin panel working.
+
+
+
+LECTURE NUMBER 195
+--We will now allow the user to update first name, last name and photo (next lecture);
+--Personally we can do it in 2 ways: a- Use forms to send first name and last name with form data. (Disadvantage: Requires page reload + different routes);
+--In order to submit the form automatically, we need to specify action in form called action = submit-user-data and method = "POST";
+--If we click on submit on the form, then it is basically gonna submit the form on the specified endpoint.
+--We need to specify the name attributes in the form key fields: name=email as attributes to the input elements inside the form.
+--Now implementing the controller now. 
+--In the viewsController, we implement this route.
+--router.post("submit-user-data", we are gonna get 2 keys: name + email there.);
+--Now, need to use a middleware from express called: express.urlEncoded({extended: true}, limit: '10kb');
+--Use findByIdAndUpdate and then update the data in the Database. 
+ 
+
+LECTURE NUMBER 196 
+--We will now use our API to update user in the backend.
+--The function name is updateData now. 
+--Call the function from the index.js.
+--const res = await axios({method: PATCH, url: xyz, data: {},  headers: {}, timeout: 5000 });
+--Import the function in index.html;
+
+--WATCHED UPTO 10 MINUTES.  
+--While submitting the form, get the: email and name of the user then call updateData function.
+--updateData will create a post request and if data is updated, then: it will get the data and store it in the variable,
+--If res.data.status is success then: it shows the success in the UI, else it will fail.
+
+
+LECTURE NUMBER 197
+--In this lecture, we will change the password of the User.
+--Jonas passes in data and then types: DATA + TYPES:
+--Data that we are sending here is just a data object.
+--We have already made the /updateMyPassword handler in the postman. This basically requires password passwordCurrent and passwordConfirm.
+--Jonas has already made the updateSettings handler, and he sees the types if password is being wanted to be changed.
+--If change type is password, then the hit url is different, else it is totally different.
+--In the UI too, It will show as being updated.
+--So if the  password will been updated successfully,it shows updated, else shows rejected.
+--Same goes for changing the password, we will extend the same of updateSettings function to make it working.
+--We write a-password b-currentPassword  c-passwordConfirm and then send a post hook.
+--After the data comes from the server, we empty the form datas.
+--We will create email templates, we will create file uploads the next.
+
+
+LECTURE NUMBER 198
+--We are now uploading images using Multer package.
+--It is used to handle the multipart form data.
+--Multer is basically a middleware for multipart form data.
+
+
+
+LECTURE NUMBER 200
+--Allow only images to be uploaded to the server.
+--Giving images a better file name.
+--setting up multer is done finally and then: 
+--we export a middleware upload.single('photo');
+-- const multerStorage = multer.diskStorage({
+        destination:(req, res, cb) =>{
+
+        },
+        fileName: (req, res, cb) => {
+                const ext = 
+        }
+})
+
+const fileFilter = (req, file, cb) =>{
+                if(file.mimeType.startsWith('image')){
+                        cb(null, true);
+                }
+                else{
+                        new AppError(('only image files are allowed'), false);
+                        //Basically we are creating an error in else section. 
+                        //
+                }
+};
+--Now we are doing some more testings on the multer middleware.
 --
+
+--This is what we will export so that the file shall be uploaded in a designated location.
+--
+
+const multer = multer({storage: storage, fileFilter: fileFilter});
+
+exports.uploadUserPhoto = 
+
+--Jonas selects some other images which is not an image, it does not upload it, and throws an App Error's Error Object to user.
+
+
+LECTURE NUMBER 201
+--Now we are saving the Image name to the User Database, so as to avail  the user accesses their corresponding images.
+-- After the filteredObject, the Jonas does this: 
+--We will create a filtered request object and for the filtered request  object: we will add a photo key with the photo name there and update the database.
+--And for default image, we basically update the model and put default image link there.
+
+LECTURE NUMBER 202
+--Now we're gonna learn about image processing.
+--We will save files into the memory first with approach: multer.memoryStorage();
+--
+-- exports.resizeUserPhoto = (req, res, next) => {
+
+        if(!req.file) return next();
+        else{
+                sharp(req.file.buffer).resize(500,500).toFormat('jpeg').jpeg({quality:80}).toFile(/public/img/users);
+
+        }
+
+         req.file.fileName;
+}
+--We used sharp package to help users resize the photos and later upload it to the DB.
+--Basically uploaded the photos through postman and resized it thru buffer thru sharp package.
+
+LECTURE  NUMBER 203
+--Now we are handling the file uplods not through the form submission, but via an API.
+--We need to make a formData object now. 
+--const form = new formData();
+--form.append('name', document.querySelector('name').value);
+--form.append('email', document.querySelector('email').value);
+--  updateSettings(form, "data");
+--form.append('photo', document.getElementById('photo').files[0]);
+--console.log(form);
+
+
+
+LECTURE NUMBER 204
+--We are now gonna upload multiple files now for tours details page.
+--Jonas copies multer code from: userController.js.
+--It's the same multer configuration.
+--const upload =  multer({storage, filter});
+--exports.uploadTourImages = upload(Array of Objects);
+--[{name: 'imageCover', maxCount: 1}, {name: 'images', maxCount: 3}, {file3}] and so on and so forth. 
+--upload.array: When there are mix of fields. . 
+--upload.single: When there is a single field with the name.
+--upload.fields: When there is a mix of them. Passed as a middleware.
+--Now We are configuring the multer. 
+--Now Jonas Adds up 2 of middleware functions for configuring the tour images and resizing the tour images.
+
+
+
+LECTURE NUMBER 205
+--We are preparing request.
+--await sharp operations returns a promise and thus can be awaited. next();
+--If(!req.file) return next();
+--We handled the file uploads with different fields.
+--We handled the file uploads successfully. 
+--We read files from the multipart file uplods and then saved it to the database, then imageCover and 3 set of images were uploaded there.
+
+
+
+LECTURE NUMBER 206
+--We are now preparing a complex email handler.
+--We are gonna build up a more complex email handler with pug templates and send emails through sendgrid.
+--Render html based on pug template.
+--const html = pug.renderFile('directory Name');
+--We installed html-2-text package in our text editor. ()
+--
+
+LECTURE NUMBER 207
+--We sent an email on signup of a user account.
+
+
+LECTURE NUMBER 208
+--We will send email on password reset now.
+
+
+LECTURE NUMBER 209
+--Sent Development password reset emails to mailtrap. 
+--Sending real emails to real users using sendgrid.
+
+
+LECTURE NUMBER 210
+--We will use payments and book user bookings here.
+
+
+
+
+LECTURE NUMBER 211
+--Jonas made a checkoutSession/:tourId route and in controller made a fn called getCheckoutSession.
+--Steps involved:
+        a- Get the currently booked tour.
+                -  const tour = tour.findById(req.params.tourId);
+                - Install Stripe npm package.
+                - Go to stripe dashboard & copy test publishable and secret key. stripe07 recommended.
+                - 
+
+
+        b-Create Checkout session.
+                in bookings controller:
+                   - Requiring a stripe will expose us a Fn.   and on passing secret key gives us stripe object that comes up with different methods.
+                   - const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+                   - stripe.checkout.sessions.create({
+
+                        payment_method_types: [card];
+                        success_url: `${req.protocol}://${req.get('host')}/`,
+                        cancel_url: `url to redirect user when there's cancellation to payment`,
+                        customer_email: req.user.email,
+                        client_reference_id: req.params.tourId,
+                        line_items: [{name: `${tour.name} Tour`}],
+                        description: tour.summary,
+                        images: [linkOfImage1, linkOfImage2. . .and so on];
+                        amount: tour.price*100,
+                        currency: 'usd',
+                        quality: 1,
+
+
+                   });
+                   -
+        c-Send it to the client.
+
+        we await for session to be created by stripe's server and  send the session returned to clients.
+
+Jonas uses johannn to log him in. He then debugs code writeen.
+He creates the session and logs it in console for jonas. This would create a payment request in stripe's page.
+
+
+
+LECTURE NUMBER 212:
+--In this one, we are gonna learn to process stripe payment in frontend, whenever user clicks on a button.
+--We show button: Book tour now whenever there is a logged in user.
+--Jonas puts in the data-tour-id in the tours to create a session on the server for tourId.
+--For the client side, we will append a script for stripe: js.stripe.com/v3/
+--In the file, we then will write: const stripe = Stripe(public_Key);
+--In the frontend, we will do: const stripe = Stripe('pk_test_BuD0WhateverWhatever'); in a frontend.
+--In the frontend itself, he does:  export const bookTour = tourId => {
+                                                        
+                                                        --Get checkout session from API.
+
+                                                        --const session = await axios('/checkout-session/${tourId}') //Just url for get requests.
+
+                                                        --console.log(session);
+
+                                                        --Create a checkout form + charge credit card for us. 
+
+                                                                      };
+--In the frontend, jonas calls stripe global variable and then gets a session via await axios('/checkout-session/tourId') and logs his/her session.
+--The stripe page is opened up, and user makes a payment there, when the payment is successful, stripe sends back the response of success to failture to the server, 
+also it will redirect the user to the designated page. 
+--
+
+
+
+LECTURE NUMBER 213
+--Now we are gonna create a bookings page as bookingModel.js.
+--const bookingSchema = new mongoose.schema({tour:{}, type: ,ref: });
+
+
+LECTURE NUMBER 214
+--Let's now create a  booking document, whenever a user will successfully purchase a tour.
+--const {tour, user, price} = req.query;
+-- if(!tour && !user && !price) return next();
+--await Booking.create({tour, user, price});
+--res.redirect(req.originalUrl.split('?)[0]);
+--So basically we aren't subscribing the stripe's post requests. But rather using our own API to validate the user's purchase.
+--It will be unsecure as it does not incoorporate any safety protocols to validate the users' purchases.
+
+LECTURE NUMBER 215
+--Now we're gonna make nice looking booking redirect page. 
+--We're gonna make a 'my-tours' page.   
+--First find all the bookings that user has made.
+--First find all the Bookings through userId.
+--Then fetch all the tours through tour's object Id  form doc fetched while fetching booking document with userId.
+--const bookings = await Boooking.find(user: userId);
+--then loop to all the tours and get them that the user has booked. Next up: we will show list of tours user have booked already.
+
+
+LECTURE NUMBER 217
+--Task: Implement all the related CRUD features in the bookings page.
+--
+
+
+
+
+LECTURE NUMBER 217
+--Multer is to be imported firstly; const multer = require('multer');
+--Like express, call the multer function() and: set the destination to public. dest: public/image/users.
+--We can configure multer in a more complex way;
+--without dest option, data will be saved into memory.
+--In this portion, we are only setting the destination.
+--Upload object contains a middleware called upload.single or upload.multiple to handle the multiple or single uploads.
+
+
+
+LECTURE NUMBER: 225
+--Go to developer tab and then: choose the endpoint url.
+--https://www.natours-jonas-herokuapp.com/webhook-checkout.
+--Then we should choose the event .checkout event
+--Add email and password now.
+--Now we will create a checkout event  which triggers automatically when transaction is successful.
+--Then we will create a route called bookingCheckout, 
+--We now make a try catch block and construct event as below.
+--Extract out signature from: req.headers['stripe-signature'];
+--Const event = stripe.webhooks.constructEvent(req.body, signature, proces.env.STRIPE_WEBHOOK-SECRET); 
+--If there's an error send error to stripe.
+--If not, check the type of event, if it is: checkout.event.complete, then it is the event that we would desire.
+--If a event is legitimate, then we wanna create an event in the DB.
+--We now create a function with a session data, which lies inside of newly constructed event on checking; 
+        If event type is: event.type==='checkout.session.complete' then we run a function: createBookingCheckout(event.data.object);
+--res.status(200).json({received:true});
+--Now create a Booking: const createBookingCheckout is: tour = session.client_reference_id;
+--find user now with email session.customer_email.
+--Set price.
+--await  Booking.create({tour, user, price});
+--Push to github and heroku master. *Push Files to Heroku too.
+--
+
+
+                                        COMPLTED 42 HRS
+
+                                      

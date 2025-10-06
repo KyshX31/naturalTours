@@ -1,23 +1,35 @@
 const {catchAsync} = require("../utils/catchAsync");
 const Tour = require("../models/tourModel");
 
-
-exports.getOverview = catchAsync(async (req, res) => {
+//This controller basically shows all the tours in the database.
+exports.getOverview = catchAsync(async (req, res, next) => {
     const tours = await Tour.find()
 
-    console.log("Get overview page is being served");
-    res.status(200).render('base.pug', {
+    console.log("Get overview page is being served with tours", tours);
+
+    res.status(200).render('overview.pug', {
+        title: "All Tours",
         tours: tours,
     });
 });
 
 exports.getTour = catchAsync(async (req, res) => {
-    const tour = await Tour.findById(req.params.id);
-    console.log("Get tour page is being served");
-    res.status(200).render('overview.pug', {
-        title: tour.name,
-        message: tour.description
+    console.log("Get tour page is being served with slug,😂😂😂😂😂😂😂😂😂😂😂😂", req.params.slug);
+    const tour = await Tour.findOne({slug: req.params.slug}).populate({
+        path: 'reviews',
+        fields: 'review rating user'
+    });
+
+    console.log("Get tour page is being served with tour,", tour);
+    
+    res.status(200).render('_tour.pug', {
+       tour: tour
     });
 });
 
  
+exports.getLoginForm = (req,res) => {
+    //designing the login form. . . 
+    res.status(200).render('login.pug')
+    
+}

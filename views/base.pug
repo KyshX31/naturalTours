@@ -1,21 +1,27 @@
 doctype html
 html
   head
-    meta(charset='utf-8')
-    meta(name='viewport', content='width=device-width, initial-scale=1.0')
-    meta(name='description', content='Books Natural Templates with our service.')
-    meta(name='author', content='Natours Team')
-    title Natours | Textarea he exciting tour thingy for natural people.
-    link(rel='stylesheet', href='css/style.css')
-    link(rel='shortcut icon', type='image/png', href='img/favicon.png')
-
+    block head
+      meta(charset='UTF-8')
+      meta(name='viewport' content='width=device-width, initial-scale=1.0')
+      link(rel='stylesheet' href='/css/style.css')
+      link(rel='shortcut icon' type='image/png' href='/img/favicon.png')
+      link(rel='stylesheet' href='https://fonts.googleapis.com/css?family=Lato:300,300i,700')
+      title Natours | #{title}
+  
   body
-    //- h1= title 
-    //- h2= message.toUpperCase()
-    //- - var x = 9
-    //- h2= 2 * x 
+    // HEADER
+    include _header
+        
+    // CONTENT
+    block content
+      h1 This is a placeholder heading. It basically gets overriden.
+      
+    // FOOTER
+    include _footer
     
-    include _header.pug
-    include _section.pug 
-    include _footer.pug
-
+    block scripts
+    //- script(src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js')
+    //- script(src='/js/mapbox.js')
+    //- script(src='/js/login.js')
+    //- script(src='/js/bundle.js')
