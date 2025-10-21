@@ -33,3 +33,8 @@ exports.getLoginForm = (req,res) => {
     res.status(200).render('login.pug')
     
 }
+
+exports.getAccount = (req, res)=>{
+    console.log("get account is running runnennnnnnnnnnnenenennene")
+    res.status(200).render('account.pug', { user: res.locals.user || req.user })
+}

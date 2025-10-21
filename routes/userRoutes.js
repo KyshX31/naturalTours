@@ -1,9 +1,11 @@
 const express = require('express');
+// const multer = require('multer'); //MULTER  IMPORT
 const userController = require('./../controllers/userController');
 const authController = require('../controllers/authController');
 
 
-const router = express.Router();
+const router = express.Router(); 
+// const upload = multer({dest: 'public/img/users'});
 
 // Auth routes
 router.post('/signup', authController.signUp);
@@ -13,7 +15,7 @@ router.post('/forgotPassword', authController.forgotPassword);
 router.patch('/resetPassword/:token', authController.resetPassword);
 
 // Protected routes
-router.use(authController.protect); // Protect all routes after this middleware
+router.use(authController.protect); 
 
 router.patch('/updateMyPassword', authController.updatePassword);
 
@@ -21,7 +23,7 @@ router.patch('/updateMyPassword', authController.updatePassword);
 // Admin routes
 router
   .route('/')
-  .get(authController.restrictTo('user  '), userController.getAllUsers)
+  .get(authController.restrictTo('user'), userController.getAllUsers)
   .post(userController.createUser);
 
 router.route('/me').get(userController.getMe, userController.getUser);
@@ -29,9 +31,10 @@ router.route('/me').get(userController.getMe, userController.getUser);
 router
   .route('/:id')
   .get(userController.getUser)
-  .patch(userController.updateUser)
-  .delete(authController.protect, authController.restrictTo('admin'), userController.deleteUser);
+  .patch( userController.uploadUserPhoto, userController.updateMe)
+  .delete( authController.restrictTo('admin'), userController.deleteUser);
 
+  //This router stack is to be watched again. 
 
 
 

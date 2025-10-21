@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
+const { stringify } = require('querystring');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -16,7 +17,9 @@ const userSchema = new mongoose.Schema({
     lowercase: true,
     validate: [validator.isEmail, 'Please Provide A Valid Email']
   },
-  photo: String,
+  photo: {type: String,
+    default: 'default.jpg'
+  },
   password: {
     type: String,
     required: [true, 'Please provide a password'],

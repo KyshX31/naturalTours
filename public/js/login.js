@@ -1,12 +1,12 @@
 const loginForm = document.querySelector(".form");
+import { showAlert } from './alerts.js';
+console.log("showAlert function imported: ", showAlert);
 
 
  async function login(email, password){
     //function body
     console.log("email received: ", email);
     console.log("password received: ", password);
-
-
     try{
          console.log("trying")
       const res =   await axios(
@@ -26,9 +26,16 @@ const loginForm = document.querySelector(".form");
     if(res.data.status === 'success'){
         console.log("Successfully logged in");
         console.log("Token received: ", res.data.token);
-        alert("Logged in successfully!");
+        showAlert('success', 'You are logged in successfully.');
+
+        // alert("Logged in successfully!");
         // Optionally redirect to another page
-        // window.location.href = '/overview';
+        // window.location.href = '/api/v1/views/login';
+
+       window.setTimeout(()=>{
+        //
+        location.assign('/api/v1/views/login')
+       }, 3000);
     }
 
     }
@@ -36,10 +43,15 @@ const loginForm = document.querySelector(".form");
         console.log("showing errors")
         console.log(error.message);
         // Show alert for login failure
+        showAlert('error', 'could not log in.')
         if(error.response && error.response.data && error.response.data.message) {
-            alert(`Login failed: ${error.response.data.message}`);
+            // alert(`Login failed: ${error.response.data.message}`);
+            showAlert('error', 'could not log in.')
+
         } else {
-            alert("Login failed. Please check your credentials and try again.");
+            // alert("Login failed. Please check your credentials and try again.");
+            showAlert('error', 'Failed. Please check your credentials and try again.')
+
         }
     }
 }

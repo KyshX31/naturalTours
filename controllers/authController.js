@@ -90,14 +90,26 @@ exports.login = catchAsync(async (req, res, next) => {
 
 
 exports.logOut = catchAsync(async (req, res, next) => {
-  res.cookie('token', 'You are now logged out of the system', {
-    expires: Date.now()+10*1000,
-    httpOnly: true
+  // Clear the token cookie by setting it to expire immediately
+  res.cookie('token', '', {
+    expires: new Date(0),
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production'
   });
-  res.status(200).json({
-    status: 'success',
-    message: 'You are now logged out of the system'
+  
+  // Set cache control headers to prevent browser from caching the redirect
+  res.set({
+    'Cache-Control': 'no-cache, no-store, must-revalidate',
+    'Pragma': 'no-cache',
+    'Expires': '0'
   });
+  
+  // res.redirect("/api/v1/views/login");
+  setTimeout(() => {
+       res.redirect("/api/v1/views/login");
+
+  }, 3000);
+  
 });
 
 
@@ -159,6 +171,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
 
   req.user = userExists;
+  res.locals.user = userExists;
   next();
 });
 
