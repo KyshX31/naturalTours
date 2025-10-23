@@ -31,7 +31,7 @@ router.route('/me').get(userController.getMe, userController.getUser);
 router
   .route('/:id')
   .get(userController.getUser)
-  .patch( userController.uploadUserPhoto, userController.updateMe)
+  .patch( userController.uploadUserPhoto, userController.resizeUserPhoto, userController.updateMe)
   .delete( authController.restrictTo('admin'), userController.deleteUser);
 
   //This router stack is to be watched again. 
