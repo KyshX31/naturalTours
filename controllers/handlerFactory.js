@@ -3,6 +3,9 @@ const AppError = require('./../utils/AppError');
 const { model } = require('mongoose');
 const APIFeatures = require('./../utils/apiFeatures');
 
+
+
+
 exports.deleteOne = Model=> catchAsync(async (req, res, next) => {
 const doc = await Model.findByIdAndDelete(req.params.id);
 if(!doc){
@@ -14,9 +17,14 @@ if(!doc){
         data: null
     });
 });
+
+
+
+
   
 
 exports.updateOne = Model =>   catchAsync(async (req, res, next) => {
+
       const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
         runValidators: true

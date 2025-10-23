@@ -124,7 +124,8 @@ exports.protect = catchAsync(async (req, res, next) => {
   //4-Check if user changed his password after the token was issued to him/her.
   //5-log user in if all above steps are valid.
 
-  console.log('req headers', req.headers);
+  // console.log('req headers', req.headers);
+  console.log("protect middleware is running, 👄👄👄👄👄👄👄👄👄👄👄👄👄👄👄")
 
   let token;
   if (
