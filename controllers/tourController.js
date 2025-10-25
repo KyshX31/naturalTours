@@ -6,6 +6,41 @@ const AppError = require('../utils/AppError');
 
 const factory = require("./handlerFactory");
 
+const multer = require("multer");
+const  multerStorage = multer.memoryStorage();
+
+
+const multerFilter = (req, file, cb) => {
+  console.log("🔍 Multer Filter - File received:", { 
+    fieldname: file.fieldname, 
+    originalname: file.originalname,
+    mimetype: file.mimetype, 
+    size: file.size 
+  }); 
+
+  if (file.mimetype.startsWith('image')) {
+    console.log("✅ File accepted - it's an image");
+    cb(null, true)
+  } else {
+    console.log("❌ File rejected - not an image");
+    cb(new AppError("It is not an image! Please upload an image only.", 400), false)
+  }
+}
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter
+})
+ 
+exports.uploadTourImages = upload.fields([
+  {name: 'imageCover', maxCount: 1},
+  {name: 'images', maxCount: 3}
+])
+
+exports.resizeTourImages = (req, res, next)=>{
+  console.log("showing request.file uploaded from the multer and saved in RAM. --tourController");
+  console.log(req.files);
+}
+
 
 exports.aliasTopTours = (req, res, next) => {
   req.query.limit = '5';

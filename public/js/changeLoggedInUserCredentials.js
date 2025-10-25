@@ -32,7 +32,17 @@ const response = await axios({
     data: form
 });
 
+if(response.data.status==='success'){
+    showAlert('success','Data updated successfully');
+    // Refresh the page after 2 seconds
+    setTimeout(() => {
+        window.location.reload();
+    }, 2000);
+}
 
+else{
+    showAlert('error', 'couldnot update')
+}
 console.log("response from the server is: 🦕🦕🦕🦕🦕🦕🦕🦕🦕🦕🦕🦕🦕🦕🦕🦕🦕🦕🦕", response);
 //
 })
