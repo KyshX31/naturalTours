@@ -1,3 +1,15 @@
 {
-    "liveServer.settings.port": 5501
+    "liveServer.settings.port": 5501,
+    "editor.inlineSuggest.enabled": false,
+    "github.copilot.enable": {
+        "*": false
+    },
+    "editor.quickSuggestions": {
+        "other": true,
+        "comments": false,
+        "strings": false
+    },
+    "editor.suggest.showWords": true,
+    "editor.wordBasedSuggestions": "matchingDocuments",
+    "editor.suggest.localityBonus": true
 }

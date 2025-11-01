@@ -7,5 +7,15 @@
 			"path": "../AWC-LMS-NOTIFICATION/AWC-LMS"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"editor.inlineSuggest.enabled": false,
+		"github.copilot.enable": {
+			"*": false
+		},
+		"editor.quickSuggestions": {
+			"other": true,
+			"comments": false,
+			"strings": false
+		}
+	}
 }
