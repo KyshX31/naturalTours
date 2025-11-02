@@ -9,7 +9,7 @@ const User = require('./../models/userModel');
 const { catchAsync } = require('../utils/catchAsync');
 const AppError = require('../utils/AppError');
 
-const sendEmail = require('../utils/email');
+const Email = require('../utils/email');
 
 const signToken = id => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -29,6 +29,9 @@ exports.signUp = catchAsync(async (req, res, next) => {
   // const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
   //   expiresIn: process.env.JWT_EXPIRES_IN
   // });
+  const url = 0;
+  await new Email(newUser, 0).sendWelcome();
+
   const token = signToken(newUser._id);
 
   res.status(201).json({
@@ -231,16 +234,24 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
       'host'
     )}/api/v1/resetPassword/${resetToken}`;
 
-    const message = `Forgot Your Password? Please reset it by submitting a patch request on the below URI.
-  ${resetTokenURL}. Kindly ignore if you have not requested for a password change.`;
+  //   const message = `Forgot Your Password? Please reset it by submitting a patch request on the below URI.
+  // ${resetTokenURL}. Kindly ignore if you have not requested for a password change.`;
     //
     //
-    const emailResponse = await sendEmail({
-      email,
-      subject: `Your password reset token is just valid for 10 minutes`,
-      message
-    });
-    console.log('email response after reset mail trap: ', emailResponse);
+  
+    //PASSWORD RESET EMAIL PORRTION.
+    // const emailResponse = await sendEmail({
+    //   email,
+    //   subject: `Your password reset token is just valid for 10 minutes`,
+    //   message
+    // });
+    // console.log('email response after reset mail trap: ', emailResponse);
+
+    console.log("Before password token url is made. . . . .!!!!!!!!!11");
+    await new Email(userFound, resetTokenURL).sendForgotPassword();
+
+    console.log("The password reset email has been sent successfully!!!!!!!!!!"
+    )
 
     res.status(200).json({
       status: 'success',

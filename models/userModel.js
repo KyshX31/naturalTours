@@ -56,9 +56,9 @@ userSchema.pre('save', async function(next) {
   next();
 });
 
-userSchema.pre('save', async function(req, res, next) {
+userSchema.pre('save', async function(next) {
   if (!this.isModified('password') || !this.isNew) return next();
-  this.passwordChangedAt = Date.now();
+  this.passwordChangedAt = Date.now() - 1000;
   next();
 });
 
